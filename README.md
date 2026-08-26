@@ -23,6 +23,11 @@
 
 - [`kevent`](pkg/kevent) — a generic in-memory event bus (`Bus[T]`,
   `Registry`).
+- [`kcache`](pkg/kcache) — a generic sharded in-memory cache (`Cache[K,
+  V]`, `Registry`).
+- [`kore`](pkg/kore) — the generic concurrency-safe registry
+  (`Registry[Key]`) that `kevent.Registry` and `kcache.Registry` are both
+  built on.
 
 ## Install
 
@@ -68,6 +73,52 @@ orders.Publish(ctx, OrderPlaced{ID: "o4", Total: 7})
 
 See [`pkg/kevent`](pkg/kevent) for the full package docs and runnable
 examples.
+
+### kcache
+
+#### Cache
+
+```go
+profiles := kcache.NewCache[string, UserProfileDTO]()
+
+profiles.Set("user-1", UserProfileDTO{Name: "Alice", Plan: "pro"}, 5*time.Minute)
+
+if p, ok := profiles.Get("user-1"); ok {
+	fmt.Printf("%s is on the %s plan\n", p.Name, p.Plan)
+}
+```
+
+#### Registry
+
+```go
+reg := kcache.NewRegistry()
+
+// Wired once at startup, per named cache.
+kcache.Register(reg, "sessions", kcache.NewCache[string, string]())
+kcache.Register(reg, "profiles", kcache.NewCache[string, UserProfileDTO]())
+
+// Elsewhere, code that only knows the name gets the right cache.
+sessions := kcache.From[string, string](reg, "sessions")
+sessions.Set("session-1", "alice", time.Minute)
+```
+
+See [`pkg/kcache`](pkg/kcache) for the full package docs and runnable
+examples.
+
+### kore
+
+```go
+r := kore.New[string]()
+
+kore.Register(r, "greeting", "hello")
+
+if v, err := kore.From[string, string](r, "greeting"); err == nil {
+	fmt.Println(v)
+}
+```
+
+See [`pkg/kore`](pkg/kore) for the full package docs and a
+runnable example.
 
 ## License
 
