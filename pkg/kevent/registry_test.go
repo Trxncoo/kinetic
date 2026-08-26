@@ -14,7 +14,7 @@ type userSignedUp struct{ ID string }
 // struct value can never be nil, so it should never be treated as one).
 type fakeBus[T any] struct{}
 
-func (fakeBus[T]) Subscribe(Handler[T]) func() { return func() {} }
+func (fakeBus[T]) Subscribe(Handler[T]) func()      { return func() {} }
 func (fakeBus[T]) Publish(context.Context, T) error { return nil }
 
 func TestRegistry_RegisterAndFrom(t *testing.T) {

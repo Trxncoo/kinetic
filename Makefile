@@ -22,7 +22,12 @@ vet:
 	go vet ./...
 
 fmt:
-	gofmt -l .
+	@out="$$(gofmt -l .)"; \
+	if [ -n "$$out" ]; then \
+		echo "The following files are not gofmt'd:"; \
+		echo "$$out"; \
+		exit 1; \
+	fi
 
 lint:
 	golangci-lint run ./...
@@ -30,4 +35,4 @@ lint:
 tidy:
 	go mod tidy
 
-check: vet race lint
+check: fmt vet race lint
