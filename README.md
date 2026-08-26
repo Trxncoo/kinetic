@@ -28,6 +28,8 @@
 - [`kcore`](pkg/kcore) — the generic concurrency-safe registry
   (`Registry[Key]`) that `kevent.Registry` and `kcache.Registry` are both
   built on.
+- [`kretry`](pkg/kretry) — retry with composable backoff and jitter
+  (`Backoff`, `Do`/`DoValue`).
 
 ## Install
 
@@ -119,6 +121,35 @@ if v, err := kcore.From[string, string](r, "greeting"); err == nil {
 
 See [`pkg/kcore`](pkg/kcore) for the full package docs and a
 runnable example.
+
+### kretry
+
+```go
+backoff := kretry.NewExponential(200 * time.Millisecond).
+	WithMaxRetries(5).
+	WithCappedDuration(30 * time.Second).
+	WithFullJitter()
+
+body, err := kretry.DoValue(ctx, backoff, func(ctx context.Context) ([]byte, error) {
+	resp, err := http.Get(url)
+	if err != nil {
+		return nil, kretry.RetryableError(err) // network error: worth retrying
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode >= 500 {
+		return nil, kretry.RetryableError(fmt.Errorf("server error: %d", resp.StatusCode))
+	}
+	if resp.StatusCode >= 400 {
+		return nil, fmt.Errorf("client error: %d", resp.StatusCode) // permanent, stops immediately
+	}
+
+	return io.ReadAll(resp.Body)
+})
+```
+
+See [`pkg/kretry`](pkg/kretry) for the full package docs and runnable
+examples.
 
 ## License
 
