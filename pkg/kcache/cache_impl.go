@@ -39,6 +39,13 @@ type cache[K comparable, V any] struct {
 }
 
 // NewCache creates an empty Cache for keys of type K and values of type V.
+//
+// If K is an interface type (including any), Get/Set/Delete panic for a
+// key whose dynamic value isn't itself comparable — a slice, map, or func
+// boxed in K. This isn't specific to kcache: Go's comparable constraint
+// permits interface types, but comparing (or, here, hashing) a
+// non-comparable dynamic value still panics at runtime. Prefer a concrete
+// comparable K over an interface-typed one to rule this out entirely.
 func NewCache[K comparable, V any]() Cache[K, V] {
 	c := &cache[K, V]{seed: maphash.MakeSeed()}
 	for i := range c.shards {

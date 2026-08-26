@@ -131,6 +131,20 @@ func TestCache_GenericOverStructKeys(t *testing.T) {
 	}
 }
 
+func TestCache_InterfaceKeyWithNonComparableDynamicValuePanics(t *testing.T) {
+	// Documented, not a kcache bug: comparable permits interface types,
+	// but hashing/comparing a non-comparable dynamic value inside one
+	// still panics at runtime.
+	c := NewCache[any, string]()
+
+	defer func() {
+		if recover() == nil {
+			t.Fatal("expected Set with a non-comparable dynamic value to panic")
+		}
+	}()
+	c.Set([]int{1, 2, 3}, "boom", 0)
+}
+
 func TestCache_ConcurrentGetSetDelete(t *testing.T) {
 	c := NewCache[int, int]()
 
