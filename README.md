@@ -21,6 +21,9 @@
 
 ## Packages
 
+- [`kevent`](pkg/kevent) — a generic in-memory event bus (`Bus[T]`,
+  `Registry`).
+
 ## Install
 
 ```sh
@@ -28,6 +31,23 @@ go get github.com/Trxncoo/kinetic
 ```
 
 ## Showcase
+
+### kevent
+
+```go
+orders := kevent.NewBus[OrderPlaced]()
+
+unsubscribe := orders.Subscribe(func(ctx context.Context, e OrderPlaced) error {
+	fmt.Println("emailing receipt for", e.ID)
+	return nil
+})
+
+orders.Publish(ctx, OrderPlaced{ID: "o1", Total: 42})
+unsubscribe()
+```
+
+See [`pkg/kevent`](pkg/kevent) for the full package docs and runnable
+examples.
 
 ## License
 
