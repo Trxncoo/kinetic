@@ -1,0 +1,12 @@
+BenchmarkCache_Get-1: mean=34.64 ns/op min=33.84 max=35.16
+BenchmarkCache_Get-4: mean=34.24 ns/op min=33.52 max=35.19
+BenchmarkCache_Get-8: mean=34.49 ns/op min=33.64 max=38.52
+BenchmarkCache_Get_Parallel-1: mean=48.38 ns/op min=47.94 max=48.76
+BenchmarkCache_Get_Parallel-4: mean=28.30 ns/op min=23.83 max=36.01
+BenchmarkCache_Get_Parallel-8: mean=15.78 ns/op min=15.39 max=16.15
+BenchmarkCache_Set-1: mean=42.03 ns/op min=41.62 max=42.44
+BenchmarkCache_Set-4: mean=41.91 ns/op min=40.79 max=42.90
+BenchmarkCache_Set-8: mean=42.04 ns/op min=40.87 max=42.50
+BenchmarkCache_Set_Parallel-1: mean=58.09 ns/op min=56.50 max=60.22
+BenchmarkCache_Set_Parallel-4: mean=53.71 ns/op min=39.19 max=89.53
+BenchmarkCache_Set_Parallel-8: mean=31.10 ns/op min=29.60 max=32.72
