@@ -1,0 +1,3 @@
+# Intentionally otherwise empty: bench/*/chart.svg and summary.txt (from
+# `make bench-graph`) are committed on purpose, not ignored, so
+# performance is trackable over time via git history.

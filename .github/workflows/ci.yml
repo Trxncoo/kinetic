@@ -24,23 +24,19 @@ jobs:
           cache: true
 
       # Cheapest, no-compile check first — fail fast before spending time
-      # on vet/test.
+      # on vet/test. Shells out to the Makefile so this and local `make
+      # fmt` can't drift apart.
       - name: Gofmt
-        run: |
-          out="$(gofmt -l .)"
-          if [ -n "$out" ]; then
-            echo "The following files are not gofmt'd:"
-            echo "$out"
-            exit 1
-          fi
+        run: make fmt
 
       # Compiles and type-checks everything, so a separate `go build` step
       # would just redo this work.
       - name: Vet
-        run: go vet ./...
+        run: make vet
 
-      # Builds again (with race instrumentation, a different build than
-      # vet's) and runs the suite.
+      # Not `make race`: that target skips -cover for faster local
+      # iteration, but CI wants the coverage number, so this stays a
+      # direct command instead of pretending the two are identical.
       - name: Test
         run: go test ./... -race -cover
 

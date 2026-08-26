@@ -1,6 +1,9 @@
 .PHONY: build test race bench bench-graph vet fmt lint tidy check
 
 COUNT ?= 10
+# Only bench/bench-graph honor PKG — targeting one package's benchmarks
+# (`make bench PKG=./pkg/kcache`) is common; targeting one package's
+# tests/vet less so, so build/test/race/vet stay hardcoded to ./....
 PKG ?= ./...
 
 build:

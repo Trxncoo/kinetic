@@ -126,11 +126,12 @@ def render_txt(series):
 
 
 def main():
-    if len(sys.argv) < 1:
+    in_path = sys.argv[1] if len(sys.argv) > 1 and sys.argv[1] != "-" else None
+
+    if in_path is None and sys.stdin.isatty():
         print(f"usage: go test ... | {sys.argv[0]} [bench-output.txt] [out-dir]", file=sys.stderr)
         sys.exit(1)
 
-    in_path = sys.argv[1] if len(sys.argv) > 1 and sys.argv[1] != "-" else None
     out_dir = sys.argv[2] if len(sys.argv) > 2 else "bench"
 
     if in_path:
