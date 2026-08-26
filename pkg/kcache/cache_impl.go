@@ -64,6 +64,13 @@ func (c *cache[K, V]) shardFor(key K) *shard[K, V] {
 	return &c.shards[h&(shardCount-1)]
 }
 
+// Get deletes key under the same lock if it's found but expired, instead
+// of leaving that to a separate pass: there's no background sweeper (no
+// goroutine lifecycle to manage, no CPU spent scanning entries nobody's
+// reading), so lazy, on-read cleanup is the only place expired entries
+// ever get reclaimed short of Delete. The tradeoff is documented on Len:
+// an entry that's Set and never Get again lingers until it's evicted some
+// other way.
 func (c *cache[K, V]) Get(key K) (V, bool) {
 	s := c.shardFor(key)
 
@@ -82,6 +89,8 @@ func (c *cache[K, V]) Get(key K) (V, bool) {
 	return e.value, true
 }
 
+// Set computes expiresAt before taking the shard lock, so the lock is
+// only ever held for the map write itself.
 func (c *cache[K, V]) Set(key K, value V, ttl time.Duration) {
 	var expiresAt time.Time
 	if ttl > 0 {
@@ -101,6 +110,11 @@ func (c *cache[K, V]) Delete(key K) {
 	s.mu.Unlock()
 }
 
+// Len locks and counts one shard at a time rather than all 256 at once —
+// cheaper and simpler, at the cost of the result being a point-in-time
+// approximation under concurrent writes rather than a true snapshot (see
+// the Cache interface doc). Good enough for a diagnostic count; nothing
+// in this package depends on it being exact.
 func (c *cache[K, V]) Len() int {
 	n := 0
 	for i := range c.shards {

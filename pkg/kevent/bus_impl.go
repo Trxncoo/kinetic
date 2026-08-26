@@ -99,6 +99,9 @@ func (b *bus[T]) Publish(ctx context.Context, event T) error {
 	return errors.Join(errs...)
 }
 
+// deref reads p, treating a nil pointer (the atomic.Pointer's zero value,
+// before any Subscribe call) as an empty slice instead of a nil-pointer
+// dereference.
 func deref[T any](p *[]subscriber[T]) []subscriber[T] {
 	if p == nil {
 		return nil

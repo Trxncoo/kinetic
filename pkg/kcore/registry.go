@@ -41,7 +41,7 @@ type Registry[Key comparable] struct {
 	items map[Key]any
 }
 
-// New creates an empty Registry.
+// NewRegistry creates an empty Registry.
 func NewRegistry[Key comparable]() *Registry[Key] {
 	return &Registry[Key]{items: make(map[Key]any)}
 }

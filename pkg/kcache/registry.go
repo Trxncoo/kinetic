@@ -9,7 +9,10 @@ import (
 
 // Registry holds named caches, so application wiring code can pass a
 // single Registry around instead of one cache field per purpose. Built on
-// kcore.Registry[string].
+// kcore.Registry[string]. Register and From are free functions rather
+// than methods, because Go doesn't allow a method to introduce a new type
+// parameter — Registry itself isn't generic over any single (K, V), since
+// it holds many.
 //
 // Unlike kevent.Registry, this is keyed by name, not by type: a Cache's
 // (K, V) type pair isn't a unique identity the way an event type is for a
