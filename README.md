@@ -13,9 +13,10 @@
 </p>
 
 <p align="center">
-  A Go framework built as small, composable packages, focused on performance
-  and developer experience.
+  <strong>Small, composable Go packages — built for performance and DX.</strong>
 </p>
+
+---
 
 ## Packages
 
