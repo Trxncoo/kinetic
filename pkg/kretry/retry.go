@@ -42,6 +42,10 @@ func RetryableError(err error) error {
 // as kevent.Bus.Publish: a panic means something in f is actually broken,
 // not a condition to retry past.
 func Do(ctx context.Context, b Backoff, f RetryFunc) error {
+	if f == nil {
+		panic("kretry: Do called with a nil f")
+	}
+
 	for {
 		if err := ctx.Err(); err != nil {
 			return err
@@ -73,6 +77,10 @@ func Do(ctx context.Context, b Backoff, f RetryFunc) error {
 
 // DoValue is Do for an operation that produces a value on success.
 func DoValue[T any](ctx context.Context, b Backoff, f RetryFuncValue[T]) (T, error) {
+	if f == nil {
+		panic("kretry: DoValue called with a nil f")
+	}
+
 	var result T
 	err := Do(ctx, b, func(ctx context.Context) error {
 		v, err := f(ctx)

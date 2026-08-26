@@ -5,14 +5,14 @@ import (
 	"time"
 )
 
-// WithMaxRetries allows at most max retries through b, not counting the
+// WithMaxRetries allows at most n retries through b, not counting the
 // first attempt — paired with Do, WithMaxRetries(2) means up to 2 retries
 // after the first attempt fails, 3 total calls to the retried function.
-func (b Backoff) WithMaxRetries(max int) Backoff {
+func (b Backoff) WithMaxRetries(n int) Backoff {
 	attempt := 0
 	return Backoff{
 		next: func() (time.Duration, bool) {
-			if attempt >= max {
+			if attempt >= n {
 				return 0, true
 			}
 			attempt++
@@ -21,13 +21,13 @@ func (b Backoff) WithMaxRetries(max int) Backoff {
 	}
 }
 
-// WithCappedDuration clamps every delay from b to at most cap.
-func (b Backoff) WithCappedDuration(cap time.Duration) Backoff {
+// WithCappedDuration clamps every delay from b to at most limit.
+func (b Backoff) WithCappedDuration(limit time.Duration) Backoff {
 	return Backoff{
 		next: func() (time.Duration, bool) {
 			delay, stop := b.next()
-			if delay > cap {
-				delay = cap
+			if delay > limit {
+				delay = limit
 			}
 			return delay, stop
 		},

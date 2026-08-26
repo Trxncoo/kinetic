@@ -21,6 +21,15 @@ func TestDo_SucceedsFirstTry(t *testing.T) {
 	}
 }
 
+func TestDo_NilFuncPanics(t *testing.T) {
+	defer func() {
+		if recover() == nil {
+			t.Fatal("expected panic from Do(nil)")
+		}
+	}()
+	_ = Do(context.Background(), NewConstant(time.Millisecond), nil)
+}
+
 func TestDo_HandlerPanicPropagates(t *testing.T) {
 	defer func() {
 		if recover() == nil {
@@ -112,6 +121,15 @@ func TestDo_ContextCanceledDuringBackoffWaitReturnsPromptly(t *testing.T) {
 	if elapsed > time.Second {
 		t.Fatalf("Do took %v, want well under the 1h backoff delay", elapsed)
 	}
+}
+
+func TestDoValue_NilFuncPanics(t *testing.T) {
+	defer func() {
+		if recover() == nil {
+			t.Fatal("expected panic from DoValue(nil)")
+		}
+	}()
+	_, _ = DoValue[int](context.Background(), NewConstant(time.Millisecond), nil)
 }
 
 func TestDoValue_ReturnsValueOnSuccess(t *testing.T) {
