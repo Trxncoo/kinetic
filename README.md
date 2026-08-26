@@ -8,15 +8,14 @@
 
 <p align="center">
   <a href="https://pkg.go.dev/github.com/Trxncoo/kinetic"><img alt="Go Reference" src="https://pkg.go.dev/badge/github.com/Trxncoo/kinetic.svg"></a>
-  <a href="https://goreportcard.com/report/github.com/Trxncoo/kinetic"><img alt="Go Report Card" src="https://goreportcard.com/badge/github.com/Trxncoo/kinetic"></a>
   <a href="go.mod"><img alt="Go Version" src="https://img.shields.io/github/go-mod/go-version/Trxncoo/kinetic"></a>
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg"></a>
 </p>
 
-# kinetic
-
-A Go framework built as small, composable packages, focused on performance
-and developer experience.
+<p align="center">
+  A Go framework built as small, composable packages, focused on performance
+  and developer experience.
+</p>
 
 ## Packages
 
