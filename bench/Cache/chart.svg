@@ -9,47 +9,47 @@
 <line x1="60" y1="196.0" x2="700" y2="196.0" stroke="#e5e7eb"/>
 <text x="52" y="200.0" text-anchor="end">40.1</text>
 <line x1="60" y1="128.0" x2="700" y2="128.0" stroke="#e5e7eb"/>
-<text x="52" y="132.0" text-anchor="end">53.4</text>
+<text x="52" y="132.0" text-anchor="end">53.5</text>
 <line x1="60" y1="60.0" x2="700" y2="60.0" stroke="#e5e7eb"/>
-<text x="52" y="64.0" text-anchor="end">66.8</text>
+<text x="52" y="64.0" text-anchor="end">66.9</text>
 <text x="60.0" y="420" text-anchor="middle">cpu=1</text>
 <text x="380.0" y="420" text-anchor="middle">cpu=4</text>
 <text x="700.0" y="420" text-anchor="middle">cpu=8</text>
 <text x="20" y="40">ns/op</text>
-<polyline points="60.0,223.7 380.0,225.7 700.0,224.5" fill="none" stroke="#3b82f6" stroke-width="2"/>
-<line x1="60.0" y1="227.8" x2="60.0" y2="221.1" stroke="#3b82f6" stroke-width="1"/>
-<circle cx="60.0" cy="223.7" r="3" fill="#3b82f6"/>
-<line x1="380.0" y1="229.4" x2="380.0" y2="220.9" stroke="#3b82f6" stroke-width="1"/>
-<circle cx="380.0" cy="225.7" r="3" fill="#3b82f6"/>
-<line x1="700.0" y1="228.8" x2="700.0" y2="204.0" stroke="#3b82f6" stroke-width="1"/>
-<circle cx="700.0" cy="224.5" r="3" fill="#3b82f6"/>
+<polyline points="60.0,222.3 380.0,223.9 700.0,221.8" fill="none" stroke="#3b82f6" stroke-width="2"/>
+<line x1="60.0" y1="223.8" x2="60.0" y2="220.7" stroke="#3b82f6" stroke-width="1"/>
+<circle cx="60.0" cy="222.3" r="3" fill="#3b82f6"/>
+<line x1="380.0" y1="229.0" x2="380.0" y2="209.0" stroke="#3b82f6" stroke-width="1"/>
+<circle cx="380.0" cy="223.9" r="3" fill="#3b82f6"/>
+<line x1="700.0" y1="228.7" x2="700.0" y2="208.0" stroke="#3b82f6" stroke-width="1"/>
+<circle cx="700.0" cy="221.8" r="3" fill="#3b82f6"/>
 <line x1="770" y1="60" x2="790" y2="60" stroke="#3b82f6" stroke-width="2"/>
 <text x="794" y="64">BenchmarkCache_Get</text>
-<polyline points="60.0,153.8 380.0,256.0 700.0,319.7" fill="none" stroke="#ef4444" stroke-width="2"/>
-<line x1="60.0" y1="156.0" x2="60.0" y2="151.8" stroke="#ef4444" stroke-width="1"/>
-<circle cx="60.0" cy="153.8" r="3" fill="#ef4444"/>
-<line x1="380.0" y1="278.7" x2="380.0" y2="216.7" stroke="#ef4444" stroke-width="1"/>
-<circle cx="380.0" cy="256.0" r="3" fill="#ef4444"/>
-<line x1="700.0" y1="321.7" x2="700.0" y2="317.8" stroke="#ef4444" stroke-width="1"/>
-<circle cx="700.0" cy="319.7" r="3" fill="#ef4444"/>
+<polyline points="60.0,141.9 380.0,248.1 700.0,320.2" fill="none" stroke="#ef4444" stroke-width="2"/>
+<line x1="60.0" y1="151.9" x2="60.0" y2="96.9" stroke="#ef4444" stroke-width="1"/>
+<circle cx="60.0" cy="141.9" r="3" fill="#ef4444"/>
+<line x1="380.0" y1="270.3" x2="380.0" y2="198.4" stroke="#ef4444" stroke-width="1"/>
+<circle cx="380.0" cy="248.1" r="3" fill="#ef4444"/>
+<line x1="700.0" y1="323.2" x2="700.0" y2="317.9" stroke="#ef4444" stroke-width="1"/>
+<circle cx="700.0" cy="320.2" r="3" fill="#ef4444"/>
 <line x1="770" y1="78" x2="790" y2="78" stroke="#ef4444" stroke-width="2"/>
 <text x="794" y="82">BenchmarkCache_Get_Parallel</text>
-<polyline points="60.0,186.1 380.0,186.7 700.0,186.0" fill="none" stroke="#10b981" stroke-width="2"/>
-<line x1="60.0" y1="188.2" x2="60.0" y2="184.0" stroke="#10b981" stroke-width="1"/>
-<circle cx="60.0" cy="186.1" r="3" fill="#10b981"/>
-<line x1="380.0" y1="192.4" x2="380.0" y2="181.7" stroke="#10b981" stroke-width="1"/>
-<circle cx="380.0" cy="186.7" r="3" fill="#10b981"/>
-<line x1="700.0" y1="192.0" x2="700.0" y2="183.7" stroke="#10b981" stroke-width="1"/>
-<circle cx="700.0" cy="186.0" r="3" fill="#10b981"/>
+<polyline points="60.0,189.3 380.0,185.7 700.0,187.1" fill="none" stroke="#10b981" stroke-width="2"/>
+<line x1="60.0" y1="193.0" x2="60.0" y2="184.3" stroke="#10b981" stroke-width="1"/>
+<circle cx="60.0" cy="189.3" r="3" fill="#10b981"/>
+<line x1="380.0" y1="187.2" x2="380.0" y2="183.8" stroke="#10b981" stroke-width="1"/>
+<circle cx="380.0" cy="185.7" r="3" fill="#10b981"/>
+<line x1="700.0" y1="190.3" x2="700.0" y2="183.9" stroke="#10b981" stroke-width="1"/>
+<circle cx="700.0" cy="187.1" r="3" fill="#10b981"/>
 <line x1="770" y1="96" x2="790" y2="96" stroke="#10b981" stroke-width="2"/>
 <text x="794" y="100">BenchmarkCache_Set</text>
-<polyline points="60.0,104.3 380.0,126.7 700.0,241.7" fill="none" stroke="#f59e0b" stroke-width="2"/>
-<line x1="60.0" y1="112.5" x2="60.0" y2="93.5" stroke="#f59e0b" stroke-width="1"/>
+<polyline points="60.0,104.3 380.0,125.3 700.0,244.3" fill="none" stroke="#f59e0b" stroke-width="2"/>
+<line x1="60.0" y1="110.5" x2="60.0" y2="96.9" stroke="#f59e0b" stroke-width="1"/>
 <circle cx="60.0" cy="104.3" r="3" fill="#f59e0b"/>
-<line x1="380.0" y1="200.6" x2="380.0" y2="-55.6" stroke="#f59e0b" stroke-width="1"/>
-<circle cx="380.0" cy="126.7" r="3" fill="#f59e0b"/>
-<line x1="700.0" y1="249.4" x2="700.0" y2="233.5" stroke="#f59e0b" stroke-width="1"/>
-<circle cx="700.0" cy="241.7" r="3" fill="#f59e0b"/>
+<line x1="380.0" y1="165.9" x2="380.0" y2="12.8" stroke="#f59e0b" stroke-width="1"/>
+<circle cx="380.0" cy="125.3" r="3" fill="#f59e0b"/>
+<line x1="700.0" y1="256.6" x2="700.0" y2="236.6" stroke="#f59e0b" stroke-width="1"/>
+<circle cx="700.0" cy="244.3" r="3" fill="#f59e0b"/>
 <line x1="770" y1="114" x2="790" y2="114" stroke="#f59e0b" stroke-width="2"/>
 <text x="794" y="118">BenchmarkCache_Set_Parallel</text>
 </svg>

@@ -9,29 +9,29 @@
 <line x1="60" y1="196.0" x2="700" y2="196.0" stroke="#e5e7eb"/>
 <text x="52" y="200.0" text-anchor="end">8.3</text>
 <line x1="60" y1="128.0" x2="700" y2="128.0" stroke="#e5e7eb"/>
-<text x="52" y="132.0" text-anchor="end">11.1</text>
+<text x="52" y="132.0" text-anchor="end">11.0</text>
 <line x1="60" y1="60.0" x2="700" y2="60.0" stroke="#e5e7eb"/>
 <text x="52" y="64.0" text-anchor="end">13.8</text>
 <text x="60.0" y="420" text-anchor="middle">cpu=1</text>
 <text x="380.0" y="420" text-anchor="middle">cpu=4</text>
 <text x="700.0" y="420" text-anchor="middle">cpu=8</text>
 <text x="20" y="40">ns/op</text>
-<polyline points="60.0,111.7 380.0,104.3 700.0,110.8" fill="none" stroke="#3b82f6" stroke-width="2"/>
-<line x1="60.0" y1="118.8" x2="60.0" y2="102.6" stroke="#3b82f6" stroke-width="1"/>
-<circle cx="60.0" cy="111.7" r="3" fill="#3b82f6"/>
-<line x1="380.0" y1="115.1" x2="380.0" y2="89.3" stroke="#3b82f6" stroke-width="1"/>
+<polyline points="60.0,116.2 380.0,104.3 700.0,108.2" fill="none" stroke="#3b82f6" stroke-width="2"/>
+<line x1="60.0" y1="119.3" x2="60.0" y2="113.1" stroke="#3b82f6" stroke-width="1"/>
+<circle cx="60.0" cy="116.2" r="3" fill="#3b82f6"/>
+<line x1="380.0" y1="109.9" x2="380.0" y2="101.5" stroke="#3b82f6" stroke-width="1"/>
 <circle cx="380.0" cy="104.3" r="3" fill="#3b82f6"/>
-<line x1="700.0" y1="115.6" x2="700.0" y2="106.0" stroke="#3b82f6" stroke-width="1"/>
-<circle cx="700.0" cy="110.8" r="3" fill="#3b82f6"/>
+<line x1="700.0" y1="115.6" x2="700.0" y2="97.8" stroke="#3b82f6" stroke-width="1"/>
+<circle cx="700.0" cy="108.2" r="3" fill="#3b82f6"/>
 <line x1="770" y1="60" x2="790" y2="60" stroke="#3b82f6" stroke-width="2"/>
 <text x="794" y="64">BenchmarkBus_Publish</text>
-<polyline points="60.0,112.6 380.0,325.0 700.0,342.7" fill="none" stroke="#ef4444" stroke-width="2"/>
-<line x1="60.0" y1="123.5" x2="60.0" y2="88.9" stroke="#ef4444" stroke-width="1"/>
-<circle cx="60.0" cy="112.6" r="3" fill="#ef4444"/>
-<line x1="380.0" y1="326.6" x2="380.0" y2="323.4" stroke="#ef4444" stroke-width="1"/>
-<circle cx="380.0" cy="325.0" r="3" fill="#ef4444"/>
-<line x1="700.0" y1="344.2" x2="700.0" y2="341.4" stroke="#ef4444" stroke-width="1"/>
-<circle cx="700.0" cy="342.7" r="3" fill="#ef4444"/>
+<polyline points="60.0,118.0 380.0,324.2 700.0,341.8" fill="none" stroke="#ef4444" stroke-width="2"/>
+<line x1="60.0" y1="120.0" x2="60.0" y2="112.6" stroke="#ef4444" stroke-width="1"/>
+<circle cx="60.0" cy="118.0" r="3" fill="#ef4444"/>
+<line x1="380.0" y1="325.5" x2="380.0" y2="321.9" stroke="#ef4444" stroke-width="1"/>
+<circle cx="380.0" cy="324.2" r="3" fill="#ef4444"/>
+<line x1="700.0" y1="343.2" x2="700.0" y2="336.9" stroke="#ef4444" stroke-width="1"/>
+<circle cx="700.0" cy="341.8" r="3" fill="#ef4444"/>
 <line x1="770" y1="78" x2="790" y2="78" stroke="#ef4444" stroke-width="2"/>
 <text x="794" y="82">BenchmarkBus_Publish_Parallel</text>
 </svg>

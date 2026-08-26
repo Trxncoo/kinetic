@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="968" height="460" font-family="sans-serif" font-size="12">
+<rect width="968" height="460" fill="white"/>
+<line x1="60" y1="400.0" x2="700" y2="400.0" stroke="#e5e7eb"/>
+<text x="52" y="404.0" text-anchor="end">0.0</text>
+<line x1="60" y1="332.0" x2="700" y2="332.0" stroke="#e5e7eb"/>
+<text x="52" y="336.0" text-anchor="end">1.0</text>
+<line x1="60" y1="264.0" x2="700" y2="264.0" stroke="#e5e7eb"/>
+<text x="52" y="268.0" text-anchor="end">2.0</text>
+<line x1="60" y1="196.0" x2="700" y2="196.0" stroke="#e5e7eb"/>
+<text x="52" y="200.0" text-anchor="end">3.1</text>
+<line x1="60" y1="128.0" x2="700" y2="128.0" stroke="#e5e7eb"/>
+<text x="52" y="132.0" text-anchor="end">4.1</text>
+<line x1="60" y1="60.0" x2="700" y2="60.0" stroke="#e5e7eb"/>
+<text x="52" y="64.0" text-anchor="end">5.1</text>
+<text x="60.0" y="420" text-anchor="middle">cpu=1</text>
+<text x="380.0" y="420" text-anchor="middle">cpu=4</text>
+<text x="700.0" y="420" text-anchor="middle">cpu=8</text>
+<text x="20" y="40">ns/op</text>
+<polyline points="60.0,106.9 380.0,106.4 700.0,104.3" fill="none" stroke="#3b82f6" stroke-width="2"/>
+<line x1="60.0" y1="110.2" x2="60.0" y2="100.0" stroke="#3b82f6" stroke-width="1"/>
+<circle cx="60.0" cy="106.9" r="3" fill="#3b82f6"/>
+<line x1="380.0" y1="110.0" x2="380.0" y2="100.0" stroke="#3b82f6" stroke-width="1"/>
+<circle cx="380.0" cy="106.4" r="3" fill="#3b82f6"/>
+<line x1="700.0" y1="110.4" x2="700.0" y2="92.7" stroke="#3b82f6" stroke-width="1"/>
+<circle cx="700.0" cy="104.3" r="3" fill="#3b82f6"/>
+<line x1="770" y1="60" x2="790" y2="60" stroke="#3b82f6" stroke-width="2"/>
+<text x="794" y="64">BenchmarkBackoff_Next</text>
+</svg>
