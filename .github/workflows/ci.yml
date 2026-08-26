@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      # Cheapest, no-compile check first — fail fast before spending time
+      # on vet/test.
+      - name: Gofmt
+        run: |
+          out="$(gofmt -l .)"
+          if [ -n "$out" ]; then
+            echo "The following files are not gofmt'd:"
+            echo "$out"
+            exit 1
+          fi
+
+      # Compiles and type-checks everything, so a separate `go build` step
+      # would just redo this work.
+      - name: Vet
+        run: go vet ./...
+
+      # Builds again (with race instrumentation, a different build than
+      # vet's) and runs the suite.
+      - name: Test
+        run: go test ./... -race -cover
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - uses: golangci/golangci-lint-action@v9
+        with:
+          version: v2.13.1
