@@ -25,7 +25,7 @@
   `Registry`).
 - [`kcache`](pkg/kcache) — a generic sharded in-memory cache (`Cache[K,
   V]`, `Registry`).
-- [`kore`](pkg/kore) — the generic concurrency-safe registry
+- [`kcore`](pkg/kcore) — the generic concurrency-safe registry
   (`Registry[Key]`) that `kevent.Registry` and `kcache.Registry` are both
   built on.
 
@@ -105,19 +105,19 @@ sessions.Set("session-1", "alice", time.Minute)
 See [`pkg/kcache`](pkg/kcache) for the full package docs and runnable
 examples.
 
-### kore
+### kcore
 
 ```go
-r := kore.New[string]()
+r := kcore.NewRegistry[string]()
 
-kore.Register(r, "greeting", "hello")
+kcore.Register(r, "greeting", "hello")
 
-if v, err := kore.From[string, string](r, "greeting"); err == nil {
+if v, err := kcore.From[string, string](r, "greeting"); err == nil {
 	fmt.Println(v)
 }
 ```
 
-See [`pkg/kore`](pkg/kore) for the full package docs and a
+See [`pkg/kcore`](pkg/kcore) for the full package docs and a
 runnable example.
 
 ## License

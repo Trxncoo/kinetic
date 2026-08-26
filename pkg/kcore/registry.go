@@ -1,11 +1,11 @@
-// Package kore provides a small, generic, concurrency-safe registry:
+// Package kcore provides a small, generic, concurrency-safe registry:
 // one value per key, looked up by its static type. It's the shared
 // mechanics behind kevent.Registry and kcache.Registry — each wraps a
 // Registry keyed on whatever makes sense for it (kevent: reflect.Type,
 // since one event type has one canonical bus; kcache: string, since a
 // (K, V) pair isn't a unique identity for a cache) and layers its own
 // panic-on-misuse policy on top of the errors this package returns.
-package kore
+package kcore
 
 import (
 	"errors"
@@ -18,18 +18,18 @@ var (
 	// typed nil pointer boxed in a non-nil interface — that's not a nil
 	// interface, so it would otherwise be stored successfully and then
 	// fail with a confusing nil-pointer error the first time it's used.
-	ErrNilValue = errors.New("kore: nil value")
+	ErrNilValue = errors.New("kcore: nil value")
 
 	// ErrAlreadyExists is returned by Register when key is already
 	// registered.
-	ErrAlreadyExists = errors.New("kore: key already registered")
+	ErrAlreadyExists = errors.New("kcore: key already registered")
 
 	// ErrNotFound is returned by From when key has nothing registered.
-	ErrNotFound = errors.New("kore: key not found")
+	ErrNotFound = errors.New("kcore: key not found")
 
 	// ErrTypeMismatch is returned by From when key has a value
 	// registered, but not of the requested type V.
-	ErrTypeMismatch = errors.New("kore: value has a different type")
+	ErrTypeMismatch = errors.New("kcore: value has a different type")
 )
 
 // Registry holds one value per key, safe for concurrent use. Meant for
@@ -42,7 +42,7 @@ type Registry[Key comparable] struct {
 }
 
 // New creates an empty Registry.
-func New[Key comparable]() *Registry[Key] {
+func NewRegistry[Key comparable]() *Registry[Key] {
 	return &Registry[Key]{items: make(map[Key]any)}
 }
 

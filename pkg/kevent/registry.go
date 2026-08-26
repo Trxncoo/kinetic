@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/Trxncoo/kinetic/pkg/kore"
+	"github.com/Trxncoo/kinetic/pkg/kcore"
 )
 
 // Registry holds one Bus per event type, so application wiring code can
@@ -13,7 +13,7 @@ import (
 // Register and From are free functions rather than methods, because Go
 // doesn't allow a method to introduce a new type parameter — Registry
 // itself isn't generic over any single T, since it holds many. Built on
-// kore.Registry[reflect.Type], keyed by event type since one event
+// kcore.Registry[reflect.Type], keyed by event type since one event
 // type has one canonical bus.
 //
 // Registry only matters at startup: Register and From are meant to be
@@ -22,12 +22,12 @@ import (
 // published to from then on. Publish never goes through the Registry, so
 // it adds no overhead to the hot path.
 type Registry struct {
-	inner *kore.Registry[reflect.Type]
+	inner *kcore.Registry[reflect.Type]
 }
 
 // NewRegistry creates an empty Registry.
 func NewRegistry() *Registry {
-	return &Registry{inner: kore.New[reflect.Type]()}
+	return &Registry{inner: kcore.NewRegistry[reflect.Type]()}
 }
 
 // Register adds bus as the Bus for event type T. It panics if bus is nil
@@ -39,10 +39,10 @@ func NewRegistry() *Registry {
 func Register[T any](r *Registry, bus Bus[T]) {
 	t := reflect.TypeFor[T]()
 
-	switch err := kore.Register(r.inner, t, bus); {
-	case errors.Is(err, kore.ErrNilValue):
+	switch err := kcore.Register(r.inner, t, bus); {
+	case errors.Is(err, kcore.ErrNilValue):
 		panic("kevent: Register called with a nil bus")
-	case errors.Is(err, kore.ErrAlreadyExists):
+	case errors.Is(err, kcore.ErrAlreadyExists):
 		panic(fmt.Sprintf("kevent: bus for %s already registered", t))
 	}
 }
@@ -53,7 +53,7 @@ func Register[T any](r *Registry, bus Bus[T]) {
 // no runtime condition to gracefully branch on), so there's no
 // non-panicking variant to fall back to.
 func From[T any](r *Registry) Bus[T] {
-	bus, err := kore.From[reflect.Type, Bus[T]](r.inner, reflect.TypeFor[T]())
+	bus, err := kcore.From[reflect.Type, Bus[T]](r.inner, reflect.TypeFor[T]())
 	if err != nil {
 		panic(fmt.Sprintf("kevent: no bus registered for %s", reflect.TypeFor[T]()))
 	}

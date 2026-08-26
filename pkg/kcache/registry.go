@@ -4,12 +4,12 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/Trxncoo/kinetic/pkg/kore"
+	"github.com/Trxncoo/kinetic/pkg/kcore"
 )
 
 // Registry holds named caches, so application wiring code can pass a
 // single Registry around instead of one cache field per purpose. Built on
-// kore.Registry[string].
+// kcore.Registry[string].
 //
 // Unlike kevent.Registry, this is keyed by name, not by type: a Cache's
 // (K, V) type pair isn't a unique identity the way an event type is for a
@@ -26,12 +26,12 @@ import (
 // directly (e.g. in a struct field) and used from then on. Get/Set/Delete
 // never go through the Registry, so it adds no overhead to the hot path.
 type Registry struct {
-	inner *kore.Registry[string]
+	inner *kcore.Registry[string]
 }
 
 // NewRegistry creates an empty Registry.
 func NewRegistry() *Registry {
-	return &Registry{inner: kore.New[string]()}
+	return &Registry{inner: kcore.NewRegistry[string]()}
 }
 
 // Register adds cache under name. It panics if cache is nil (including a
@@ -41,10 +41,10 @@ func NewRegistry() *Registry {
 // is already registered — like http.ServeMux, both are wiring bugs to
 // catch at startup, not runtime conditions to handle.
 func Register[K comparable, V any](r *Registry, name string, cache Cache[K, V]) {
-	switch err := kore.Register(r.inner, name, cache); {
-	case errors.Is(err, kore.ErrNilValue):
+	switch err := kcore.Register(r.inner, name, cache); {
+	case errors.Is(err, kcore.ErrNilValue):
 		panic("kcache: Register called with a nil cache")
-	case errors.Is(err, kore.ErrAlreadyExists):
+	case errors.Is(err, kcore.ErrAlreadyExists):
 		panic(fmt.Sprintf("kcache: cache %q already registered", name))
 	}
 }
@@ -55,11 +55,11 @@ func Register[K comparable, V any](r *Registry, name string, cache Cache[K, V]) 
 // of named caches is fixed at startup, so there's no runtime condition to
 // gracefully branch on), so there's no non-panicking variant.
 func From[K comparable, V any](r *Registry, name string) Cache[K, V] {
-	cache, err := kore.From[string, Cache[K, V]](r.inner, name)
+	cache, err := kcore.From[string, Cache[K, V]](r.inner, name)
 	switch {
-	case errors.Is(err, kore.ErrNotFound):
+	case errors.Is(err, kcore.ErrNotFound):
 		panic(fmt.Sprintf("kcache: no cache registered for %q", name))
-	case errors.Is(err, kore.ErrTypeMismatch):
+	case errors.Is(err, kcore.ErrTypeMismatch):
 		panic(fmt.Sprintf("kcache: cache %q was registered with a different type", name))
 	}
 	return cache

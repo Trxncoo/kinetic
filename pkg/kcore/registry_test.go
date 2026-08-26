@@ -1,4 +1,4 @@
-package kore
+package kcore
 
 import (
 	"errors"
@@ -8,7 +8,7 @@ import (
 )
 
 func TestRegistry_RegisterAndFrom(t *testing.T) {
-	r := New[string]()
+	r := NewRegistry[string]()
 
 	if err := Register(r, "a", 42); err != nil {
 		t.Fatalf("Register: %v", err)
@@ -24,7 +24,7 @@ func TestRegistry_RegisterAndFrom(t *testing.T) {
 }
 
 func TestRegistry_FromNotFound(t *testing.T) {
-	r := New[string]()
+	r := NewRegistry[string]()
 
 	_, err := From[string, int](r, "missing")
 	if !errors.Is(err, ErrNotFound) {
@@ -33,7 +33,7 @@ func TestRegistry_FromNotFound(t *testing.T) {
 }
 
 func TestRegistry_FromTypeMismatch(t *testing.T) {
-	r := New[string]()
+	r := NewRegistry[string]()
 	if err := Register(r, "a", 42); err != nil {
 		t.Fatalf("Register: %v", err)
 	}
@@ -45,7 +45,7 @@ func TestRegistry_FromTypeMismatch(t *testing.T) {
 }
 
 func TestRegistry_RegisterDuplicateKey(t *testing.T) {
-	r := New[string]()
+	r := NewRegistry[string]()
 	if err := Register(r, "a", 1); err != nil {
 		t.Fatalf("Register: %v", err)
 	}
@@ -63,7 +63,7 @@ func TestRegistry_RegisterDuplicateKey(t *testing.T) {
 }
 
 func TestRegistry_RegisterNilValue(t *testing.T) {
-	r := New[string]()
+	r := NewRegistry[string]()
 
 	err := Register[string, *int](r, "a", nil)
 	if !errors.Is(err, ErrNilValue) {
@@ -76,7 +76,7 @@ func TestRegistry_RegisterNilValue(t *testing.T) {
 }
 
 func TestRegistry_RegisterTypedNilValue(t *testing.T) {
-	r := New[string]()
+	r := NewRegistry[string]()
 	var nilPtr *int // non-nil interface value, nil underlying pointer
 
 	err := Register(r, "a", nilPtr)
@@ -86,7 +86,7 @@ func TestRegistry_RegisterTypedNilValue(t *testing.T) {
 }
 
 func TestRegistry_RegisterValueTypeIsNeverNil(t *testing.T) {
-	r := New[string]()
+	r := NewRegistry[string]()
 
 	// A plain struct value can never be nil, regardless of its fields.
 	if err := Register(r, "a", struct{ N int }{N: 0}); err != nil {
@@ -95,7 +95,7 @@ func TestRegistry_RegisterValueTypeIsNeverNil(t *testing.T) {
 }
 
 func TestRegistry_GenericOverReflectTypeKey(t *testing.T) {
-	r := New[reflect.Type]()
+	r := NewRegistry[reflect.Type]()
 	key := reflect.TypeFor[int]()
 
 	if err := Register(r, key, "value for int"); err != nil {
@@ -108,7 +108,7 @@ func TestRegistry_GenericOverReflectTypeKey(t *testing.T) {
 }
 
 func TestRegistry_ConcurrentRegisterAndFrom(t *testing.T) {
-	r := New[int]()
+	r := NewRegistry[int]()
 
 	var wg sync.WaitGroup
 	for i := range 50 {
