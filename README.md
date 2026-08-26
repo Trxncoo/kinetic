@@ -34,6 +34,8 @@ go get github.com/Trxncoo/kinetic
 
 ### kevent
 
+#### Bus
+
 ```go
 orders := kevent.NewBus[OrderPlaced]()
 
@@ -44,6 +46,24 @@ unsubscribe := orders.Subscribe(func(ctx context.Context, e OrderPlaced) error {
 
 orders.Publish(ctx, OrderPlaced{ID: "o1", Total: 42})
 unsubscribe()
+```
+
+#### Registry
+
+```go
+reg := kevent.NewRegistry()
+
+// Wired once at startup, per event type.
+kevent.Register(reg, kevent.NewBus[OrderPlaced]())
+kevent.Register(reg, kevent.NewBus[UserSignedUp]())
+
+// Elsewhere, code that only knows the event type gets the right bus.
+orders := kevent.From[OrderPlaced](reg)
+orders.Subscribe(func(ctx context.Context, e OrderPlaced) error {
+	fmt.Println("emailing receipt for", e.ID)
+	return nil
+})
+orders.Publish(ctx, OrderPlaced{ID: "o4", Total: 7})
 ```
 
 See [`pkg/kevent`](pkg/kevent) for the full package docs and runnable
