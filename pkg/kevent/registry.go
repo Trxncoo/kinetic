@@ -1,16 +1,20 @@
 package kevent
 
 import (
+	"errors"
 	"fmt"
 	"reflect"
-	"sync"
+
+	"github.com/Trxncoo/kinetic/pkg/kore"
 )
 
 // Registry holds one Bus per event type, so application wiring code can
 // pass a single Registry around instead of one bus field per event type.
 // Register and From are free functions rather than methods, because Go
 // doesn't allow a method to introduce a new type parameter — Registry
-// itself isn't generic over any single T, since it holds many.
+// itself isn't generic over any single T, since it holds many. Built on
+// kore.Registry[reflect.Type], keyed by event type since one event
+// type has one canonical bus.
 //
 // Registry only matters at startup: Register and From are meant to be
 // called once per event type while wiring an application, to obtain the
@@ -18,13 +22,12 @@ import (
 // published to from then on. Publish never goes through the Registry, so
 // it adds no overhead to the hot path.
 type Registry struct {
-	mu    sync.RWMutex
-	buses map[reflect.Type]any
+	inner *kore.Registry[reflect.Type]
 }
 
 // NewRegistry creates an empty Registry.
 func NewRegistry() *Registry {
-	return &Registry{buses: make(map[reflect.Type]any)}
+	return &Registry{inner: kore.New[reflect.Type]()}
 }
 
 // Register adds bus as the Bus for event type T. It panics if bus is nil
@@ -34,30 +37,13 @@ func NewRegistry() *Registry {
 // a bus for T is already registered — like http.ServeMux, both are wiring
 // bugs to catch at startup, not runtime conditions to handle.
 func Register[T any](r *Registry, bus Bus[T]) {
-	if isNilBus(bus) {
-		panic("kevent: Register called with a nil bus")
-	}
-
 	t := reflect.TypeFor[T]()
 
-	r.mu.Lock()
-	defer r.mu.Unlock()
-	if _, exists := r.buses[t]; exists {
+	switch err := kore.Register(r.inner, t, bus); {
+	case errors.Is(err, kore.ErrNilValue):
+		panic("kevent: Register called with a nil bus")
+	case errors.Is(err, kore.ErrAlreadyExists):
 		panic(fmt.Sprintf("kevent: bus for %s already registered", t))
-	}
-	r.buses[t] = bus
-}
-
-func isNilBus(bus any) bool {
-	if bus == nil {
-		return true
-	}
-	v := reflect.ValueOf(bus)
-	switch v.Kind() {
-	case reflect.Chan, reflect.Func, reflect.Interface, reflect.Map, reflect.Pointer, reflect.Slice:
-		return v.IsNil()
-	default:
-		return false
 	}
 }
 
@@ -67,11 +53,8 @@ func isNilBus(bus any) bool {
 // no runtime condition to gracefully branch on), so there's no
 // non-panicking variant to fall back to.
 func From[T any](r *Registry) Bus[T] {
-	r.mu.RLock()
-	bus, ok := r.buses[reflect.TypeFor[T]()].(Bus[T])
-	r.mu.RUnlock()
-
-	if !ok {
+	bus, err := kore.From[reflect.Type, Bus[T]](r.inner, reflect.TypeFor[T]())
+	if err != nil {
 		panic(fmt.Sprintf("kevent: no bus registered for %s", reflect.TypeFor[T]()))
 	}
 	return bus
