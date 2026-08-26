@@ -230,20 +230,16 @@ func TestBus_ConcurrentSubscribePublishUnsubscribe(t *testing.T) {
 
 	var wg sync.WaitGroup
 	for range 50 {
-		wg.Add(3)
-		go func() {
-			defer wg.Done()
+		wg.Go(func() {
 			unsubscribe := bus.Subscribe(func(_ context.Context, e int) error { return nil })
 			unsubscribe()
-		}()
-		go func() {
-			defer wg.Done()
+		})
+		wg.Go(func() {
 			_ = bus.Publish(context.Background(), 1)
-		}()
-		go func() {
-			defer wg.Done()
+		})
+		wg.Go(func() {
 			bus.Subscribe(func(_ context.Context, e int) error { return nil })
-		}()
+		})
 	}
 	wg.Wait()
 }

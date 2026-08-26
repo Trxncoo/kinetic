@@ -8,7 +8,7 @@ import (
 
 // fakeCache is a value-type Cache[K, V] implementation, used to prove
 // Cache[K, V] isn't secretly tied to the sharded impl and to exercise
-// isNilCache's non-pointer branch (a struct value can never be nil, so it
+// kcore.isNil's non-pointer branch (a struct value can never be nil, so it
 // should never be treated as one).
 type fakeCache[K comparable, V any] struct{}
 

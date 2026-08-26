@@ -10,7 +10,7 @@ type orderPlaced struct{ ID string }
 type userSignedUp struct{ ID string }
 
 // fakeBus is a value-type Bus[T] implementation, used to prove Bus[T] isn't
-// secretly tied to bus and to exercise isNilBus's non-pointer branch (a
+// secretly tied to bus and to exercise kcore.isNil's non-pointer branch (a
 // struct value can never be nil, so it should never be treated as one).
 type fakeBus[T any] struct{}
 
@@ -99,10 +99,9 @@ func TestRegistry_ConcurrentRegisterDistinctTypes(t *testing.T) {
 	type c struct{ N int }
 
 	var wg sync.WaitGroup
-	wg.Add(3)
-	go func() { defer wg.Done(); Register(reg, NewBus[a]()) }()
-	go func() { defer wg.Done(); Register(reg, NewBus[b]()) }()
-	go func() { defer wg.Done(); Register(reg, NewBus[c]()) }()
+	wg.Go(func() { Register(reg, NewBus[a]()) })
+	wg.Go(func() { Register(reg, NewBus[b]()) })
+	wg.Go(func() { Register(reg, NewBus[c]()) })
 	wg.Wait()
 
 	From[a](reg) // must not panic
@@ -116,11 +115,9 @@ func TestRegistry_ConcurrentFrom(t *testing.T) {
 
 	var wg sync.WaitGroup
 	for range 100 {
-		wg.Add(1)
-		go func() {
-			defer wg.Done()
+		wg.Go(func() {
 			_ = From[orderPlaced](reg)
-		}()
+		})
 	}
 	wg.Wait()
 }

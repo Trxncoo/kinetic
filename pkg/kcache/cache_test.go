@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func TestCache_SetGet(t *testing.T) {
+func TestCache_GetReturnsSetValue(t *testing.T) {
 	c := NewCache[string, int]()
 
 	if _, ok := c.Get("a"); ok {
@@ -51,7 +51,7 @@ func TestCache_SetOverwritesExistingKey(t *testing.T) {
 	}
 }
 
-func TestCache_Delete(t *testing.T) {
+func TestCache_DeleteRemovesKey(t *testing.T) {
 	c := NewCache[string, int]()
 
 	c.Set("a", 1, 0)
@@ -97,7 +97,21 @@ func TestCache_EntryExpiresAndIsRemoved(t *testing.T) {
 	}
 }
 
-func TestCache_Len(t *testing.T) {
+func TestCache_LenCountsExpiredUntouchedEntries(t *testing.T) {
+	c := NewCache[string, int]()
+
+	c.Set("a", 1, 15*time.Millisecond)
+	time.Sleep(40 * time.Millisecond)
+
+	// Nothing has called Get or Delete on "a" since it expired, so lazy
+	// removal hasn't happened yet — Len must still count it, per its own
+	// documented behavior.
+	if n := c.Len(); n != 1 {
+		t.Fatalf("Len() = %d, want 1 (expired but untouched, still counted)", n)
+	}
+}
+
+func TestCache_LenCountsEntries(t *testing.T) {
 	c := NewCache[string, int]()
 
 	for i := range 50 {
@@ -131,10 +145,12 @@ func TestCache_GenericOverStructKeys(t *testing.T) {
 	}
 }
 
-func TestCache_InterfaceKeyWithNonComparableDynamicValuePanics(t *testing.T) {
-	// Documented, not a kcache bug: comparable permits interface types,
-	// but hashing/comparing a non-comparable dynamic value inside one
-	// still panics at runtime.
+// Documented, not a kcache bug, for all three of Get/Set/Delete: the
+// panic is centralized in shardFor, which every one of them calls first.
+// comparable permits interface types, but hashing/comparing a
+// non-comparable dynamic value inside one still panics at runtime.
+
+func TestCache_SetWithNonComparableDynamicKeyPanics(t *testing.T) {
 	c := NewCache[any, string]()
 
 	defer func() {
@@ -145,24 +161,36 @@ func TestCache_InterfaceKeyWithNonComparableDynamicValuePanics(t *testing.T) {
 	c.Set([]int{1, 2, 3}, "boom", 0)
 }
 
+func TestCache_GetWithNonComparableDynamicKeyPanics(t *testing.T) {
+	c := NewCache[any, string]()
+
+	defer func() {
+		if recover() == nil {
+			t.Fatal("expected Get with a non-comparable dynamic value to panic")
+		}
+	}()
+	c.Get([]int{1, 2, 3})
+}
+
+func TestCache_DeleteWithNonComparableDynamicKeyPanics(t *testing.T) {
+	c := NewCache[any, string]()
+
+	defer func() {
+		if recover() == nil {
+			t.Fatal("expected Delete with a non-comparable dynamic value to panic")
+		}
+	}()
+	c.Delete([]int{1, 2, 3})
+}
+
 func TestCache_ConcurrentGetSetDelete(t *testing.T) {
 	c := NewCache[int, int]()
 
 	var wg sync.WaitGroup
 	for g := range 50 {
-		wg.Add(3)
-		go func(g int) {
-			defer wg.Done()
-			c.Set(g, g, 0)
-		}(g)
-		go func(g int) {
-			defer wg.Done()
-			c.Get(g)
-		}(g)
-		go func(g int) {
-			defer wg.Done()
-			c.Delete(g)
-		}(g)
+		wg.Go(func() { c.Set(g, g, 0) })
+		wg.Go(func() { c.Get(g) })
+		wg.Go(func() { c.Delete(g) })
 	}
 	wg.Wait()
 }
