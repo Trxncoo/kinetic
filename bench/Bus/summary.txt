@@ -1,0 +1,6 @@
+BenchmarkBus_Publish-1: mean=11.25 ns/op min=11.13 max=11.40
+BenchmarkBus_Publish-4: mean=11.38 ns/op min=11.23 max=11.84
+BenchmarkBus_Publish-8: mean=11.30 ns/op min=11.10 max=11.47
+BenchmarkBus_Publish_Parallel-1: mean=11.41 ns/op min=11.08 max=12.11
+BenchmarkBus_Publish_Parallel-4: mean=2.94 ns/op min=2.87 max=3.01
+BenchmarkBus_Publish_Parallel-8: mean=2.27 ns/op min=2.21 max=2.44
